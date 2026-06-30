@@ -1,384 +1,413 @@
-# EV-AIM: Execution-Validated Adaptive Incident Mitigation
+````markdown
+# EV-Ops: Execution-Validated Autonomous Incident Management for Cloud-Native Systems
 
-> EV-AIM (Execution-Validated Adaptive Incident Mitigation) is a closed-loop LLM-assisted incident mitigation framework for Kubernetes microservices. EV-AIM injects controlled faults, collects runtime observability signals, generates mitigation plans, executes remediation actions, validates recovery, and continuously improves using execution feedback.
+EV-Ops is a closed-loop autonomous incident management framework for Kubernetes-based cloud-native microservices. It integrates online root cause analysis, LLM-assisted mitigation planning, deterministic safety validation, execution monitoring, post-execution recovery validation, and continual learning from validated operational experience.
+
+EV-Ops consists of two main components:
+
+- **EV-RCA**: Execution-Validated Root Cause Analysis for online fault localization.
+- **EV-AIM**: Execution-Validated Adaptive Incident Mitigation for safe autonomous recovery.
 
 ---
 
 ## Overview
 
-Modern incident-response systems often evaluate mitigation quality based solely on generated plans. EV-AIM instead evaluates remediation using runtime execution evidence.
-
-EV-AIM closes the loop between:
+Traditional LLM-based incident management systems often generate mitigation plans from static observations and assume that successful execution implies recovery. EV-Ops instead closes the operational loop by validating whether executed actions actually improve system health.
 
 ```text
-Fault
-  ↓
-Observation
-  ↓
-Diagnosis
-  ↓
-Mitigation Planning
-  ↓
-Execution
-  ↓
-Recovery Validation
-  ↓
-Feedback
-  ↓
+Fault Injection / Runtime Incident
+        ↓
+Multi-Modal Observability
+        ↓
+EV-RCA: Fault Localization
+        ↓
+Runtime Incident Context
+        ↓
+EV-AIM: Experience Retrieval + Mitigation Planning
+        ↓
+Safety Validation
+        ↓
+Kubernetes Execution
+        ↓
+Post-Execution Recovery Validation
+        ↓
+Feedback + Reward
+        ↓
 Experience Store
-```
+````
 
-Unlike plan-only systems, EV-AIM verifies whether executed remediation actions actually improve system health.
+EV-Ops learns from execution outcomes rather than generated plans alone.
 
 ---
 
 ## Key Features
 
-- Kubernetes-native incident mitigation
-- LLM-based remediation planning
-- Rule-based recovery baseline
-- Runtime execution validation
-- Feedback-driven experience learning
-- Namespace-level infrastructure awareness
-- Support for multiple microservice applications
-- Comparative evaluation against deterministic recovery strategies
+* Online fault localization from multi-modal observability
+* Support for single and concurrent faults
+* LLM-based mitigation planning
+* Execution-validated experience retrieval
+* Deterministic safety validation before deployment
+* Kubernetes-native remediation actions
+* Post-execution recovery validation
+* Feedback-driven Experience Store
+* Rule-based and LLM-only baselines
+* Evaluation on Robot-Shop, Sock-Shop, and Online Boutique
 
 ---
 
 ## Supported Applications
 
-| Application | Namespace |
-|------------|------------|
-| Robot Shop | `robot-shop` |
-| Sock Shop | `sock-shop` |
+| Application     | Namespace         |
+| --------------- | ----------------- |
+| Robot-Shop      | `robot-shop`      |
+| Sock-Shop       | `sock-shop`       |
 | Online Boutique | `online-boutique` |
 
 ---
 
-# Architecture
+## Architecture
 
 ```text
 ┌──────────────────────────────┐
-│ Fault Injection              │
+│ Multi-Modal Observability    │
+│ Prometheus + OpenTelemetry   │
 └──────────────┬───────────────┘
-               │
-               ▼
+               ↓
 ┌──────────────────────────────┐
-│ Metrics Collection           │
-│ Prometheus + Kubernetes      │
+│ EV-RCA                       │
+│ Online Fault Localization    │
 └──────────────┬───────────────┘
-               │
-               ▼
+               ↓
 ┌──────────────────────────────┐
-│ Planner                      │
-│ LLM / Rule-Based             │
+│ Runtime Incident Context     │
+│ Fault + Service + Symptoms   │
 └──────────────┬───────────────┘
-               │
-               ▼
+               ↓
 ┌──────────────────────────────┐
-│ Execution Decision           │
-│ execution_required?          │
+│ Experience Retrieval         │
+│ Similarity + Execution Quality│
 └──────────────┬───────────────┘
-               │
-               ▼
+               ↓
 ┌──────────────────────────────┐
-│ Executor                     │
-│ kubectl actions              │
+│ EV-AIM Planner               │
+│ LLM-based Mitigation Strategy│
 └──────────────┬───────────────┘
-               │
-               ▼
+               ↓
 ┌──────────────────────────────┐
-│ Rollout Monitoring           │
+│ Safety Validation            │
+│ Schema + Policy + Bounds     │
 └──────────────┬───────────────┘
-               │
-               ▼
+               ↓
+┌──────────────────────────────┐
+│ Kubernetes Execution         │
+│ Ansible / kubectl Actions    │
+└──────────────┬───────────────┘
+               ↓
 ┌──────────────────────────────┐
 │ Recovery Validation          │
+│ SHS / FRQ / ES / RC / Reward │
 └──────────────┬───────────────┘
-               │
-               ▼
-┌──────────────────────────────┐
-│ Feedback Generation          │
-│ SHS / PS / ES / Reward       │
-└──────────────┬───────────────┘
-               │
-               ▼
+               ↓
 ┌──────────────────────────────┐
 │ Experience Store             │
+│ Validated Mitigation Episodes│
 └──────────────────────────────┘
 ```
 
 ---
 
-# Experiment Modes
+# EV-RCA: Online Fault Localization
 
-EV-AIM currently supports four execution modes.
+EV-RCA constructs a Runtime Incident Context from multi-modal observability before mitigation is attempted. It is designed for low-latency online root cause analysis in Kubernetes microservice environments.
 
-## 1. Observation Mode
-
-Used for validating fault injections and metric collection.
+## EV-RCA Pipeline
 
 ```text
-Fault
- → Observe
- → Recover
- → Collect Metrics
+Telemetry Window
+      ↓
+Orthogonal Feature Projection
+      ↓
+Lightweight Temporal Forecasting
+      ↓
+Residual-Based Fault Ranking
+      ↓
+Localized Faults
+      ↓
+Runtime Incident Context
 ```
 
-No planning or remediation generation is performed.
+## Inputs
+
+EV-RCA consumes telemetry from:
+
+* Application metrics
+* Container resource metrics
+* Kubernetes health signals
+* Deployment state
+* Node-level infrastructure state
+* Distributed traces
+
+## Output
+
+EV-RCA produces a Runtime Incident Context containing:
+
+```text
+fault_type
+affected_service
+target_deployment
+anomalous_metrics
+resource_symptoms
+kubernetes_health
+dependency_context
+confidence_score
+supporting_observability
+```
+
+## Model Details
+
+Current EV-RCA settings used in the paper:
+
+| Parameter                 | Value                           |
+| ------------------------- | ------------------------------- |
+| Sampling interval         | `1s`                            |
+| Input window length       | `T = 32`                        |
+| Telemetry dimensions      | `D = 99`                        |
+| Forecast horizon          | `h = 32`                        |
+| Low-rank hidden dimension | `32`                            |
+| Training data             | 60 minutes of healthy telemetry |
+
+> Placeholder: add exact EV-RCA command-line scripts, model checkpoint paths, and training configuration files once finalized.
 
 ---
 
-## 2. Planner-Only Mode
+# EV-AIM: Execution-Validated Adaptive Incident Mitigation
 
-Used for evaluating diagnosis and mitigation planning quality.
+EV-AIM performs autonomous mitigation using the Runtime Incident Context generated by EV-RCA. It retrieves validated operational experience, generates mitigation strategies using an LLM, validates generated playbooks before execution, and stores recovery outcomes in an Experience Store.
+
+## EV-AIM Pipeline
 
 ```text
-Fault
- → Metrics
- → Planner
+Runtime Incident Context
+      ↓
+Execution-Validated Experience Retrieval
+      ↓
+LLM Mitigation Planning
+      ↓
+Playbook Generation
+      ↓
+Safety Validation
+      ↓
+Kubernetes Execution
+      ↓
+Post-Execution Validation
+      ↓
+Feedback + Reward
+      ↓
+Experience Store Update
 ```
-
-No remediation is executed.
 
 ---
 
-## 3. Full EV-AIM Mode
+## Experience Store
 
-Closed-loop remediation workflow.
+Each mitigation episode contains:
 
 ```text
-Fault
- → Metrics
- → Planner
- → Executor
- → Validation
- → Feedback
+Runtime Incident Context
+Mitigation Strategy
+Executable Playbook
+Normalized Action
+Execution Result
+Recovery Metrics
+Feedback Vector
+Reward
+```
+
+Each action is normalized as:
+
+```text
+(action, target, value)
+```
+
+Examples:
+
+```text
+(scale_out, frontend, 3 replicas)
+(scale_up_cpu, cart, 1000m)
+(scale_up_memory, carts, 1Gi)
+(rollback, shipping, previous revision)
 ```
 
 ---
 
-## 4. Rule-Based Baseline
+## Experience Retrieval
 
-Deterministic recovery actions used as a baseline.
+EV-AIM retrieves mitigation episodes using both contextual similarity and execution quality.
 
-```text
-Fault
- → Fixed Recovery Rule
- → Validation
- → Feedback
-```
+Contextual similarity considers:
 
-Used for comparison against EV-AIM.
+* Fault type
+* Affected service
+* Kubernetes symptoms
+* Deployment state
+* CPU utilization
+* Memory utilization
+* Disk pressure
+* Application-level symptoms
+
+Execution quality considers:
+
+* Reward
+* Execution Success
+* Fault Recovery Quality
+* Resource Cost
+* Regression indicators
+
+During cold start, EV-AIM falls back to prompt-guided mitigation. As validated episodes accumulate, planning becomes experience-guided.
+
+---
+
+## Safety Validation
+
+Before execution, every generated playbook is validated against deterministic constraints.
+
+Validation checks include:
+
+* YAML/schema correctness
+* Supported Kubernetes remediation actions
+* Namespace consistency
+* Target deployment existence
+* Resource-bound constraints
+* Rollout timeout handling
+* Failure detection
+
+Playbooks failing validation are rejected before deployment.
+
+---
+
+## Execution Validation
+
+EV-AIM validates recovery using post-execution observability rather than rollout status alone.
+
+Feedback metrics include:
+
+| Metric      | Meaning                                  |
+| ----------- | ---------------------------------------- |
+| `SHS`       | System Health Score                      |
+| `delta_SHS` | Change in system health after mitigation |
+| `FRQ`       | Fault Recovery Quality                   |
+| `ES`        | Execution Success                        |
+| `RC`        | Resource Cost                            |
+| `Reward`    | Execution-grounded mitigation quality    |
+
+Reward balances recovery quality, execution success, and resource efficiency.
 
 ---
 
 # Supported Faults
 
-## Runtime Faults
+## Resource Faults
 
-| Fault |
-|--------|
-| load_spike |
-| db_overload |
-| cpu_pressure |
-| memory_pressure |
-
----
+| Fault         | Description                                  |
+| ------------- | -------------------------------------------- |
+| `cpu_hog`     | CPU pressure injected into target service    |
+| `mem_stress`  | Memory pressure injected into target service |
+| `disk_stress` | Disk I/O or disk pressure fault              |
 
 ## Kubernetes-Native Faults
 
-| Fault |
-|--------|
-| pod_crash |
-| dependency_failure |
-| bad_image |
-| stuck_deployment |
+| Fault                | Description                                |
+| -------------------- | ------------------------------------------ |
+| `pod_crash`          | Pod is killed or restarted                 |
+| `dependency_failure` | Dependency replica or service is disrupted |
+| `bad_image`          | Deployment is updated to an invalid image  |
+| `stuck_deployment`   | Deployment rollout is paused or stuck      |
+
+## Workload Faults
+
+| Fault         | Description                     |
+| ------------- | ------------------------------- |
+| `load_spike`  | Sudden increase in user traffic |
+| `db_overload` | Database pressure or overload   |
 
 ---
 
-# Recovery Actions
+# Supported Recovery Actions
 
-| Fault | Recovery Action |
-|---------|---------|
-| load_spike | stop_load |
-| db_overload | stop_load |
-| cpu_pressure | stop_load |
-| memory_pressure | stop_load |
-| pod_crash | rollout_restart |
-| dependency_failure | restore_original_replicas |
-| bad_image | rollout_undo |
-| stuck_deployment | rollout_resume |
-
----
-
-# Metrics Collection
-
-EV-AIM collects three categories of telemetry.
-
-## Application Metrics
-
-Examples:
-
-- latency_p95
-- latency_p99
-- request_rate
-- throughput
-- error_rate
-- HTTP 5xx rate
+| Action                      | Description                          |
+| --------------------------- | ------------------------------------ |
+| `scale_out`                 | Increase replica count               |
+| `scale_up_cpu`              | Increase CPU request/limit           |
+| `scale_up_memory`           | Increase memory request/limit        |
+| `rollout_restart`           | Restart deployment                   |
+| `rollout_undo`              | Roll back to previous revision       |
+| `rollout_resume`            | Resume paused rollout                |
+| `restore_original_replicas` | Restore expected replica count       |
+| `stop_load`                 | Stop injected workload pressure      |
+| `none`                      | No action when service self-recovers |
 
 ---
 
-## Resource Metrics
+# Experiment Modes
 
-Examples:
+## 1. Observation Mode
 
-- cpu_usage
-- cpu_limit_ratio
-- cpu_throttling
-- memory_working_set
-- memory_limit_ratio
-
----
-
-## Infrastructure Metrics
-
-Namespace-level infrastructure state.
-
-Examples:
-
-- running_pods
-- pending_pods
-- failed_pods
-- restart_count
-- deployment_ready_replicas
-- deployment_available_replicas
-- HPA status
-- node resource utilization
-
----
-
-# Execution Validation
-
-A key EV-AIM feature is execution-aware planning.
-
-The planner can determine that no remediation is required.
-
-Example:
-
-```json
-{
-  "execution_required": false,
-  "reason": "Service recovered automatically."
-}
-```
-
-This prevents unnecessary remediation actions.
-
----
-
-# Feedback Model
-
-EV-AIM evaluates remediation effectiveness using execution evidence.
-
----
-
-## SHS (System Health Score)
-
-Absolute post-recovery health.
-
-Measures:
-
-- latency
-- availability
-- error rate
-- resource utilization
-- infrastructure health
-
-Higher is better.
-
----
-
-## PS (Performance Score)
-
-Relative performance improvement.
-
-Measures improvement between:
+Used to validate fault injection and metric collection.
 
 ```text
-Before Fault
-      ↓
-After Recovery
+Fault → Observe → Recover → Collect Metrics
 ```
 
-Examples:
+## 2. Planner-Only Mode
 
-- latency reduction
-- error reduction
-- throughput improvement
-
-Higher is better.
-
----
-
-## ES (Efficiency Score)
-
-Relative efficiency improvement.
-
-Measures:
-
-- CPU efficiency
-- Memory efficiency
-- Infrastructure efficiency
-
-Higher is better.
-
----
-
-## Reward
-
-Final remediation quality score.
+Used to evaluate planning quality without executing remediation.
 
 ```text
-Reward =
-0.4 × SHS +
-0.3 × PS +
-0.3 × ES
+Fault → Metrics → Planner
 ```
 
-Reward is used for experience ranking and retrieval.
+## 3. Full EV-Ops Mode
 
----
-
-# Experience Store
-
-EV-AIM maintains an execution-validated experience store.
-
-Each experience contains:
+Closed-loop diagnosis and mitigation.
 
 ```text
-Fault Context
-Mitigation Plan
-Executed Actions
-Recovery Outcome
-Feedback Metrics
-Reward
+Fault → EV-RCA → EV-AIM → Execution → Validation → Feedback
 ```
 
-The experience store supports retrieval-augmented mitigation planning.
+## 4. Rule-Based Baseline
+
+Uses deterministic recovery rules for each known fault type.
+
+```text
+Fault → Fixed Recovery Rule → Execution → Validation → Feedback
+```
+
+## 5. LLM-Only Baseline
+
+Uses the current Runtime Incident Context without retrieved experience.
+
+```text
+Fault → Runtime Incident Context → LLM Planner → Execution → Validation
+```
+
+## 6. LLM+Random Ablation
+
+Retrieves random mitigation episodes instead of execution-validated episodes.
+
+```text
+Fault → Random Experience Retrieval → LLM Planner → Execution → Validation
+```
 
 ---
 
 # Running Experiments
 
-## Full EV-AIM
+## Full EV-Ops / EV-AIM
 
 ```bash
 python3 -m src.run_batch \
   --file experiment_args/test_gpt_fixed.json
 ```
-
----
 
 ## Rule-Based Baseline
 
@@ -388,8 +417,6 @@ python3 -m src.run_batch \
   --file experiment_args/rule_based.json
 ```
 
----
-
 ## Planner-Only
 
 ```bash
@@ -398,15 +425,26 @@ python3 -m src.run_batch \
   --file experiment_args/test_gpt_fixed.json
 ```
 
+## Observation Mode
+
+```bash
+python3 -m src.run_batch \
+  --mode observe \
+  --file experiment_args/observe.json
+```
+
+> Adjust config filenames according to your local experiment setup.
+
 ---
 
 # Output Artifacts
 
-Each experiment produces:
+Each experiment writes results under `experiment_results/`.
+
+Typical outputs include:
 
 ```text
 experiment_results/
-│
 ├── planner_metrics_before.json
 ├── planner_metrics_after.json
 ├── infrastructure_before.json
@@ -415,85 +453,170 @@ experiment_results/
 ├── rollout_result.json
 ├── planner_response.json
 ├── remediation_plan.json
-└── execution_log.txt
+├── execution_log.txt
+├── latency.json
+├── summary.csv
+└── comparison_rows.csv
 ```
 
----
+Global experiment summaries may also be appended to:
 
-# Current Evaluation Design
-
-## RQ1
-
-How does EV-AIM compare against deterministic rule-based recovery?
-
----
-
-## RQ2
-
-How do different LLMs affect remediation quality?
-
-Examples:
-
-- GPT-4o
-- Claude Sonnet
-- Gemini
-
----
-
-## RQ3
-
-What is the contribution of individual EV-AIM components?
-
-Ablations:
-
-- No Retrieval
-- No Feedback
-- No Execution Validation
-- Full EV-AIM
-
----
-
-## RQ4
-
-What runtime and operational overhead does EV-AIM introduce?
-
-Metrics:
-
-- Planning latency
-- Execution latency
-- Rollout latency
-- Total mitigation time
+```text
+analyzed.csv
+summary.csv
+```
 
 ---
 
 # Repository Structure
 
 ```text
-src/
-├── fault_injection/
-├── monitoring/
-├── planner/
-├── executor/
-├── feedback/
-├── experience/
-├── experiment/
-└── run_batch.py
-
+EV-AIM/
+├── src/
+│   ├── clients/
+│   ├── experiment/
+│   ├── executor/
+│   ├── fault_injection/
+│   ├── feedback/
+│   ├── monitoring/
+│   ├── planner/
+│   ├── utils/
+│   └── run_batch.py
+│
+EV-RCA/
 experiment_args/
-
 experiment_results/
-
+knowledge/
 docs/
 ```
 
 ---
 
+# Evaluation Design
+
+## RQ1: Fault Localization
+
+Evaluates EV-RCA against representative forecasting- and anomaly-based RCA methods.
+
+Metrics:
+
+* Metric-level AV@5
+* Service-level AV@5
+* Service-level MRR
+* Training time
+* Inference latency
+* GPU memory
+* Energy consumption
+
+## RQ2: Mitigation Effectiveness
+
+Compares EV-AIM with deterministic rule-based remediation.
+
+Metrics:
+
+* Recovery Success
+* SHS
+* delta_SHS
+* FRQ
+* Resource Cost
+* Reward
+
+## RQ3: Impact of Execution-Validated Retrieval
+
+Compares:
+
+* LLM-only
+* LLM+Random
+* EV-AIM
+
+## RQ4: Cross-Application Generalization
+
+Tests whether experiences collected from Robot-Shop and Sock-Shop transfer to Online Boutique.
+
+## RQ5: Reward Alignment, Policy Diversity, and Overhead
+
+Evaluates:
+
+* Reward alignment with recovery indicators
+* Policy entropy
+* Dominant action frequency
+* Retrieval/planning/execution overhead
+
+---
+
+# Configuration Notes
+
+Common configuration parameters include:
+
+```text
+PROMETHEUS_URL
+FAULT_INIT_WAIT
+METRIC_SCRAPING_BUFFER
+ROLLOUT_TIMEOUT
+WARMUP_PERIOD
+```
+
+LLM configuration used in the evaluation:
+
+```text
+Model: GPT-4o
+Temperature: 0.3
+Top-p: 1.0
+```
+
+EV-RCA configuration:
+
+```text
+Sampling interval: 1s
+Input window: 32 steps
+Forecast horizon: 32 steps
+Telemetry dimensions: 99
+Low-rank hidden dimension: 32
+Healthy training data: 60 minutes
+```
+
+---
+
+# Requirements
+
+Placeholder requirements:
+
+```text
+python>=3.10
+kubectl
+helm
+ansible
+prometheus-api-client
+pyyaml
+pandas
+numpy
+torch
+langgraph
+openai
+```
+
+> Replace this list with the final `requirements.txt` once the environment is finalized.
+
+---
+
 # Citation
 
-If you use EV-AIM in academic research, please cite the corresponding publication once available.
+If you use EV-Ops in academic research, please cite the corresponding publication once available.
+
+```bibtex
+@inproceedings{evops2026,
+  title     = {EV-Ops: Execution-Validated Autonomous Incident Management for Cloud-Native Systems},
+  author    = {Anonymous},
+  booktitle = {Proceedings of the International Conference on Software Engineering},
+  year      = {2026}
+}
+```
 
 ---
 
 # License
 
-MIT License
+MIT License.
+
+```
+```
