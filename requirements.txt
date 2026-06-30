@@ -1,0 +1,8 @@
+requests==2.31.0
+PyYAML==6.0.1
+pandas>=2.2.3,<3.0.0
+openai==2.15.0
+prometheus-api-client
+ansible>=8.0.0
+ansible-core>=2.15.0
+kubernetes>=28.0.0

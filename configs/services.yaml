@@ -1,0 +1,6 @@
+services:
+  - cart
+  - web
+  - catalogue
+  - payment
+  - shipping

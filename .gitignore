@@ -1,0 +1,63 @@
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# VS Code
+.vscode/
+
+# PyCharm
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Coverage
+.coverage
+htmlcov/
+.pytest_cache/
+
+# Environment variables
+.env
+.env.*
+
+# Temporary files
+tmp/
+temp/
+
+# Setup scripts
+setup_cluster_env.sh
+
+# Experiment data
+experiment_args/
+experiment_results/
+experiment_results_observation/
+paper_figures/
+
+# Knowledge base
+knowledge/
+
+generate_rulebased_configs.py
+generate_evaim_configs.py
+
+logs/
+
+motivation_plot.py
