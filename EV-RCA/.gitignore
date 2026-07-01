@@ -1,0 +1,4 @@
+*.pyc
+/src/inner_results
+/inner_results
+/runs

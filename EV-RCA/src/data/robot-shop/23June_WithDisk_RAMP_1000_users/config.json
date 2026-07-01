@@ -1,0 +1,31 @@
+{
+    "URL": "LINK/robot-shop2/rca",
+    "NUM_USERS": 1000,
+    "TIMES": {
+        "CLEAR_TIME": 60,
+        "SPAWN_RATE": 50,
+        "WARMUP_TIME": 60,
+        "FAULT_INJECTION_TIME": 120,
+        "POST_FAULT_WAIT": 60,
+        "DOWNLOAD_TIME": 300
+    },
+    "SEVERITY": {
+        "cpu_hog": {
+            "fp-load": 50
+        },
+        "mem_stress": {
+            "fp-size": "256MB"
+        },
+        "disk_stress": {
+            "fp-size_mb": 50
+        },
+        "net_delay": {
+            "fp-latency": "200ms"
+        },
+        "net_loss": {
+            "fp-loss": 50
+        },
+        "pod_kill": {},
+        "dependency_failure": {}
+    }
+}
